@@ -32,5 +32,26 @@ namespace WebAPIApplication.Controllers
 
       return Json(modelo);
     }
+
+    
+    [HttpPut("{id}")]
+
+    public async Task<IActionResult> AlterPessoas(int id, [FromBody]Pessoa modelo)
+    {
+      Pessoa pessoa = await _dbContext.Pessoas.FindAsync(id);
+
+      if (pessoa == null)
+      {
+        return NotFound();
+      }
+
+      pessoa.Name    = modelo.Name;
+      pessoa.Twitter = modelo.Twitter;
+      
+      //await _dbContext.Pessoas.UpdateAsync(modelo);
+      await _dbContext.SaveChangesAsync();
+
+      return Json(modelo);
+    }
   }
 }
